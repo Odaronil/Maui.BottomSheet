@@ -15,7 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 /// The <c>BottomSheetHandler</c> is responsible for coordinating the platform-specific behavior of the bottom sheet,
 /// ensuring property synchronization, lifecycle management, and interoperation with the native implementation on supported devices.
 /// </remarks>
-internal sealed partial class BottomSheetHandler : ViewHandler<IBottomSheet, MauiBottomSheet>
+public sealed partial class BottomSheetHandler : ViewHandler<IBottomSheet, MauiBottomSheet>
 {
     /// <summary>
     /// Asynchronously opens a bottom sheet using the platform-specific implementation on macOS/iOS.
@@ -56,8 +56,7 @@ internal sealed partial class BottomSheetHandler : ViewHandler<IBottomSheet, Mau
     /// </exception>
     protected override MauiBottomSheet CreatePlatformView()
     {
-        _ = MauiContext ??
-            throw new InvalidOperationException("MauiContext is null, please check your MauiApplication.");
+        _ = MauiContext ?? throw new InvalidOperationException("MauiContext is null, please check your MauiApplication.");
 
         MauiBottomSheet bottomSheet = new(MauiContext);
 
@@ -254,5 +253,20 @@ internal sealed partial class BottomSheetHandler : ViewHandler<IBottomSheet, Mau
     private static void MapCancel(BottomSheetHandler handler, IBottomSheet bottomSheet, object? sender)
     {
         handler.PlatformView.Cancel();
+    }
+
+    /// <summary>
+    /// Maps the <c>SizeMode</c> property of the <see cref="IBottomSheet"/> to the platform-specific implementation.
+    /// </summary>
+    /// <param name="handler">The <see cref="BottomSheetHandler"/> responsible for managing the platform-specific view representation.</param>
+    /// <param name="bottomSheet">The <see cref="IBottomSheet"/> whose <c>SizeMode</c> is being mapped.</param>
+    private static void MapSizeMode(BottomSheetHandler handler, IBottomSheet bottomSheet)
+    {
+        if (handler.PlatformView.IsOpen == false)
+        {
+            return;
+        }
+
+        handler.PlatformView.SetSizeMode();
     }
 }

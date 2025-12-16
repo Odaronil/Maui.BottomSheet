@@ -11,7 +11,7 @@ using Microsoft.Maui.Handlers;
 /// Designed for internal use, this handler enables support for cross-platform bottom sheet behavior,
 /// including property updates, platform view creation, and asynchronous operations such as opening and closing the view.
 /// </remarks>
-internal sealed partial class BottomSheetHandler : ViewHandler<IBottomSheet, object>
+public sealed partial class BottomSheetHandler : ViewHandler<IBottomSheet, object>
 {
     /// <summary>
     /// Asynchronously opens the bottom sheet.
@@ -149,6 +149,16 @@ internal sealed partial class BottomSheetHandler : ViewHandler<IBottomSheet, obj
     /// <param name="bottomSheet">The instance of the <see cref="IBottomSheet"/> being processed.</param>
     /// <param name="sender">The sender object triggering the cancel command, or null if not applicable.</param>
     private static void MapCancel(BottomSheetHandler handler, IBottomSheet bottomSheet, object? sender)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Maps the <c>SizeMode</c> property of the <see cref="IBottomSheet"/> to the platform-specific implementation.
+    /// </summary>
+    /// <param name="handler">The <see cref="BottomSheetHandler"/> responsible for managing the platform-specific view representation.</param>
+    /// <param name="bottomSheet">The <see cref="IBottomSheet"/> whose <c>SizeMode</c> is being mapped.</param>
+    private static void MapSizeMode(BottomSheetHandler handler, IBottomSheet bottomSheet)
     {
         throw new NotImplementedException();
     }

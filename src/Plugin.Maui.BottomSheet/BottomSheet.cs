@@ -9,7 +9,8 @@ namespace Plugin.Maui.BottomSheet;
 /// <summary>
 /// A UI component that provides a collapsible and expandable container, typically used to display additional content at the bottom of the screen.
 /// </summary>
-public class BottomSheet : View, IBottomSheet, IElementConfiguration<BottomSheet>
+[ContentProperty(nameof(Content))]
+public partial class BottomSheet : View, IBottomSheet, IElementConfiguration<BottomSheet>
 {
     /// <summary>
     /// Represents a bindable property that determines whether the bottom sheet is displayed in modal mode.
@@ -280,6 +281,16 @@ public class BottomSheet : View, IBottomSheet, IElementConfiguration<BottomSheet
             typeof(BottomSheet),
             propertyChanged: OnBottomSheetStylePropertyChanged,
             defaultValue: new BottomSheetStyle());
+
+    /// <summary>
+    /// Bindable property that indicates whether the element is open or closed.
+    /// </summary>
+    public static readonly BindableProperty SizeModeProperty =
+        BindableProperty.Create(
+            nameof(SizeMode),
+            typeof(BottomSheetSizeMode),
+            typeof(BottomSheet),
+            defaultBindingMode: BindingMode.TwoWay);
 
     /// <summary>
     /// Gets the constant row index used to position the handle element in the BottomSheet layout.
@@ -592,6 +603,16 @@ public class BottomSheet : View, IBottomSheet, IElementConfiguration<BottomSheet
     /// Gets the container view element.
     /// </summary>
     public Grid ContainerView { get; }
+
+    /// <summary>
+    /// Gets or sets a property that defines the sizing behavior of the bottom sheet,
+    /// determining whether it adapts to predefined states or adjusts to fit its content.
+    /// </summary>
+    public BottomSheetSizeMode SizeMode
+    {
+        get => (BottomSheetSizeMode)GetValue(SizeModeProperty);
+        set => SetValue(SizeModeProperty, value);
+    }
 
     /// <summary>
     /// Activates the current instance and sets its state to "On".

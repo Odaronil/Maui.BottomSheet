@@ -10,6 +10,9 @@ namespace Plugin.BottomSheet.Android;
 /// </summary>
 public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.BottomSheetDialog
 {
+    private const int FallbackSlideDuration = 150;
+    private const int SlideInOutFadeInOutDelay = 60;
+
     private readonly Context _context;
     private readonly WeakEventManager _eventManager = new();
     private readonly BottomSheetDialogTouchOutsideListener _touchOutsideListener;
@@ -18,6 +21,7 @@ public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.Bott
     private readonly BottomSheetDialogOnBackPressedCallback _onBackPressedCallback;
     private readonly ColorDrawable _backgroundColorDrawable;
     private readonly Color _nonModalWindowBackgroundColor = Color.Transparent;
+    private readonly int _slideDuration;
 
     private View? _content;
 
@@ -44,7 +48,6 @@ public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.Bott
         Behavior.AddBottomSheetCallback(_bottomSheetCallback);
 
         Behavior.GestureInsetBottomIgnored = true;
-        Behavior.FitToContents = false;
 
         if (context is not AndroidX.AppCompat.App.AppCompatActivity activity)
         {
@@ -59,6 +62,8 @@ public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.Bott
         _layoutChangeListener.LayoutChange += LayoutChangeListener_LayoutChange;
         _onBackPressedCallback = new BottomSheetDialogOnBackPressedCallback(true);
         _onBackPressedCallback.BackPressed += OnBackPressedCallbackOnBackPressed;
+
+        _slideDuration = Context.Resources?.GetInteger(Resource.Integer.bottom_sheet_slide_duration) ?? FallbackSlideDuration;
     }
 
     /// <summary>
@@ -404,13 +409,31 @@ public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.Bott
     }
 
     /// <summary>
+    /// Gets or sets the sizing behavior of the bottom sheet, specifying whether it adapts to its content size or supports different predefined states.
+    /// </summary>
+    public BottomSheetSizeMode SizeMode
+    {
+        get => Behavior.FitToContents == true ? BottomSheetSizeMode.FitToContent : BottomSheetSizeMode.States;
+        set
+        {
+            Behavior.FitToContents = value == BottomSheetSizeMode.FitToContent ? true : false;
+
+            if (_content?.Parent is View parent
+                && parent.LayoutParameters is not null)
+            {
+                parent.LayoutParameters.Height = Behavior.FitToContents ? ViewGroup.LayoutParams.WrapContent : ViewGroup.LayoutParams.MatchParent;
+            }
+        }
+    }
+
+    /// <summary>
     /// Displays the bottom sheet or to the user.
     /// </summary>
     public override void Show()
     {
         ShowEvent += BottomSheetDialog_ShowEvent;
 
-        Window?.SetBackgroundDrawable(_backgroundColorDrawable);
+        Window?.ClearFlags(WindowManagerFlags.DimBehind);
 
         base.Show();
     }
@@ -436,6 +459,12 @@ public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.Bott
         Show();
 
         await taskCompletionSource.Task.ConfigureAwait(true);
+
+        // Googles BottomSheetDialog has a slide up/ fade in animation.
+        // This means the dialog itself is sliding up from the bottom. Changing the background may look weird as described in #184.
+        // Sooo wait until the slide in is almost finished and change the background.
+        await Task.Delay(_slideDuration - SlideInOutFadeInOutDelay).ConfigureAwait(true);
+        Window?.SetBackgroundDrawable(_backgroundColorDrawable);
     }
 
     /// <summary>
@@ -458,8 +487,6 @@ public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.Bott
         _onBackPressedCallback.BackPressed -= OnBackPressedCallbackOnBackPressed;
         _onBackPressedCallback.Remove();
 
-        await _backgroundColorDrawable.AnimateChangeAsync(_backgroundColorDrawable.Color.ToArgb(), Color.Transparent.ToArgb(), 100).ConfigureAwait(true);
-
         TaskCompletionSource taskCompletionSource = new();
 
         EventHandler @event = null!;
@@ -472,6 +499,11 @@ public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.Bott
             _ = taskCompletionSource.TrySetResult();
         };
         DismissEvent += @event;
+
+        // Googles BottomSheetDialog has a slide down/ fade out animation.
+        // This means the dialog itself is sliding up from the bottom. Changing the background may look weird as described in #184.
+        // Sooo wait until the slide down is almost finished and change the background.
+        await _backgroundColorDrawable.AnimateChangeAsync(_backgroundColorDrawable.Color.ToArgb(), Color.Transparent.ToArgb(), _slideDuration - SlideInOutFadeInOutDelay).ConfigureAwait(true);
 
         base.Dismiss();
 
@@ -546,10 +578,9 @@ public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.Bott
     /// <param name="e">An EventArgs object containing the event data.</param>
     private void BottomSheetDialog_ShowEvent(object? sender, EventArgs e)
     {
-        Window?.ClearFlags(WindowManagerFlags.DimBehind);
-
         if (_content?.Parent is View parent
-            && parent.LayoutParameters is not null)
+            && parent.LayoutParameters is not null
+            && SizeMode == BottomSheetSizeMode.States)
         {
             parent.LayoutParameters.Height = ViewGroup.LayoutParams.MatchParent;
         }

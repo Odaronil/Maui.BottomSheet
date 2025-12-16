@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFrameworks>$(NETVersion);$(LegacyNETVersion);</TargetFrameworks>
+        <PackageId>$(AssemblyName).Core</PackageId>
+        <Product>$(AssemblyName).Core</Product>
     </PropertyGroup>
 
 	<ItemGroup>
@@ -9,7 +11,7 @@
 			<_Parameter1>Plugin.BottomSheet.Android</_Parameter1>
 		</AssemblyAttribute>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-            <_Parameter1>Plugin.BottomSheet.IOSMacCatalyst</_Parameter1>
+            <_Parameter1>Plugin.BottomSheet.iOSMacCatalyst</_Parameter1>
         </AssemblyAttribute>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
 			<_Parameter1>Plugin.Maui.BottomSheet</_Parameter1>
@@ -21,4 +23,8 @@
 			<_Parameter1>Plugin.Maui.BottomSheet.Tests.Application</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	</PropertyGroup>
 </Project>

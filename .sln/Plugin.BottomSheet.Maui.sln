@@ -46,7 +46,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.BottomSheet.Android"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.BottomSheet.iOSMacCatalyst", "..\src\Plugin.BottomSheet.iOSMacCatalyst\Plugin.BottomSheet.iOSMacCatalyst.csproj", "{38ACBBBB-4D5E-5F07-1586-16E45CA6CB9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Maui.BottomSheet", "..\src\Plugin.Maui.BottomSheet\Plugin.Maui.BottomSheet\Plugin.Maui.BottomSheet.csproj", "{52D70865-4D31-72AE-5530-4C87626443DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Maui.BottomSheet", "..\src\Plugin.Maui.BottomSheet\Plugin.Maui.BottomSheet.csproj", "{52D70865-4D31-72AE-5530-4C87626443DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{1B6FF552-48E9-457E-9A76-85D21B9F9B65}"
 	ProjectSection(SolutionItems) = preProject
@@ -63,11 +63,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IssueTemplate", "IssueTempl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{209FAF6A-B346-4915-90AA-9AAF24DE2E0B}"
 	ProjectSection(SolutionItems) = preProject
-		..\.github\workflows\ci-preview.yml = ..\.github\workflows\ci-preview.yml
+		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
 		..\.github\workflows\issue_platform_identification.yml = ..\.github\workflows\issue_platform_identification.yml
 		..\.github\workflows\pr_platform_identification.yml = ..\.github\workflows\pr_platform_identification.yml
 		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.BottomSheet.Windows", "..\src\Plugin.BottomSheet.Windows\Plugin.BottomSheet.Windows.csproj", "{39AD662E-7D43-4049-A8C4-49348D102761}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,7 @@ Global
 		{225CC44F-6D7B-DDD9-B927-2C05CD6751B5}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{28241E10-F102-FB41-18B1-DC3503A7449F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28241E10-F102-FB41-18B1-DC3503A7449F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28241E10-F102-FB41-18B1-DC3503A7449F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{28241E10-F102-FB41-18B1-DC3503A7449F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28241E10-F102-FB41-18B1-DC3503A7449F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8BD76F1C-4233-5603-90C1-BA8C883D37CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -123,6 +126,10 @@ Global
 		{52D70865-4D31-72AE-5530-4C87626443DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52D70865-4D31-72AE-5530-4C87626443DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52D70865-4D31-72AE-5530-4C87626443DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39AD662E-7D43-4049-A8C4-49348D102761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39AD662E-7D43-4049-A8C4-49348D102761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39AD662E-7D43-4049-A8C4-49348D102761}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39AD662E-7D43-4049-A8C4-49348D102761}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

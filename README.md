@@ -4,7 +4,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/Plugin.Maui.BottomSheet.svg?style=flat-square&label=NuGet)](https://www.nuget.org/packages/Plugin.Maui.BottomSheet)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Platform Support](https://img.shields.io/badge/platform-iOS%20%7C%20Android%20%7C%20MacCatalyst-lightgrey.svg?style=flat-square)](#platforms)
+[![Platform Support](https://img.shields.io/badge/platforms-iOS%20%7C%20Android%20%7C%20MacCatalyst%20%7C%20Windows-lightgrey.svg?style=flat-square)](#platforms)
 
 ## ✨ Features
 
@@ -21,29 +21,58 @@ Check out the sample project to see the API in action!
 
 ## 🌍 Platform Support
 
+### Mobile
+
 <table>
 <tr>
 <td>
 
-### 📱 iOS
-**Minimum:** iOS 15+
+### 📱 Apple iOS 15+
 
-<img src="screenshots/iOS/Showcase.gif" width="200" alt="iOS Demo"/>
-<img src="screenshots/iPad/Showcase.gif" alt="iPad Demo"/>
-<td>
+<figure>
+<figcaption>iPhone</figcaption>
+<img src="screenshots/iOS/Showcase.gif" width="150" height="250" alt="iOS Demo"/>
+</figure>
 
-### 💻 MacCatalyst
-
-<img src="screenshots/MacCatalyst/Showcase.gif" width="300" alt="MacCatalyst Demo"/>
+<figure>
+<figcaption>iPad</figcaption>
+<img src="screenshots/iPad/Showcase.gif" width="200" height="200" alt="iPad Demo"/>
+</figure>
 
 </td>
 <td>
 
-### 🤖 Android
-**Minimum:** API 21+
+### 🤖 Android API 21+
 
-<img src="screenshots/Android/Showcase.gif" width="200" alt="Android Demo"/>
-<img src="screenshots/Android/Tablet/Showcase.gif" width="250" alt="Android Tablet Demo"/>
+<figure>
+<figcaption>Phone</figcaption>
+<img src="screenshots/Android/Showcase.gif" width="150" height="250" alt="Android Demo"/>
+</figure>
+
+<figure>
+<figcaption>Tablet</figcaption>
+<img src="screenshots/Android/Tablet/Showcase.gif" width="200" height="200" alt="Android Tablet Demo"/>
+</figure>
+
+</td>
+</tr>
+</table>
+
+### Desktop
+
+<table>
+<tr>
+<td>
+
+### 💻 MacCatalyst 15+
+
+<img src="screenshots/MacCatalyst/Showcase.gif" height="200" width="500" alt="MacCatalyst Demo"/>
+</td>
+<td>
+
+### 🪟 Windows
+
+<img src="screenshots/MacCatalyst/Showcase.gif" height="200" width="500" alt="Windows Demo"/>
 
 </td>
 </tr>
@@ -93,11 +122,9 @@ xmlns:bottomsheet="http://pluginmauibottomsheet.com"
 Create a simple bottom sheet:
 ```xaml
 <bottomsheet:BottomSheet x:Name="MyBottomSheet" IsOpen="{Binding IsSheetOpen}">
-    <bottomsheet:BottomSheet.Content>
-        <bottomsheet:BottomSheetContent>
-            <Label Text="Hello from Bottom Sheet!" />
-        </bottomsheet:BottomSheetContent>
-    </bottomsheet:BottomSheet.Content>
+    <bottomsheet:BottomSheetContent>
+        <Label Text="Hello from Bottom Sheet!" />
+    </bottomsheet:BottomSheetContent>
 </bottomsheet:BottomSheet>
 ```
 
@@ -107,15 +134,13 @@ Set peek height to view height (peek height changes dynamically as view height c
 <mauibottomsheet:BottomSheet
     PeekHeight="{mauibottomsheet:PeekView View={x:Reference ContentBox}}"
     States="Peek">
-    <mauibottomsheet:BottomSheet.Content>
-        <mauibottomsheet:BottomSheetContent>
-            <mauibottomsheet:BottomSheetContent.Content>
-                <Grid RowDefinitions="300">
-                    <BoxView x:Name="ContentBox" Color="Orange" />
-                </Grid>
-            </mauibottomsheet:BottomSheetContent.Content>
-        </mauibottomsheet:BottomSheetContent>
-    </mauibottomsheet:BottomSheet.Content>
+    <mauibottomsheet:BottomSheetContent>
+        <mauibottomsheet:BottomSheetContent.Content>
+            <Grid RowDefinitions="300">
+                <BoxView x:Name="ContentBox" Color="Orange" />
+            </Grid>
+        </mauibottomsheet:BottomSheetContent.Content>
+    </mauibottomsheet:BottomSheetContent>
 </mauibottomsheet:BottomSheet>
 ```
 
@@ -125,17 +150,15 @@ or
 <mauibottomsheet:BottomSheet
     PeekHeight="{mauibottomsheet:PeekView ContentBox}"
     States="Peek">
-    <mauibottomsheet:BottomSheet.Content>
-        <mauibottomsheet:BottomSheetContent>
-            <mauibottomsheet:BottomSheetContent.ContentTemplate>
-                <DataTemplate>
-                    <Grid RowDefinitions="300">
-                        <BoxView x:Name="ContentBox" Color="Orange" />
-                    </Grid>
-                </DataTemplate>
-            </mauibottomsheet:BottomSheetContent.ContentTemplate>
-        </mauibottomsheet:BottomSheetContent>
-    </mauibottomsheet:BottomSheet.Content>
+    <mauibottomsheet:BottomSheetContent>
+        <mauibottomsheet:BottomSheetContent.ContentTemplate>
+            <DataTemplate>
+                <Grid RowDefinitions="300">
+                    <BoxView x:Name="ContentBox" Color="Orange" />
+                </Grid>
+            </DataTemplate>
+        </mauibottomsheet:BottomSheetContent.ContentTemplate>
+    </mauibottomsheet:BottomSheetContent>
 </mauibottomsheet:BottomSheet>
 ```
 
@@ -148,21 +171,34 @@ or
 
 ### 🔧 Core Properties
 
-| Property                | Type                     | Description                                               |
-|-------------------------|--------------------------|-----------------------------------------------------------|
-| `IsModal`               | `bool`                   | Enable/disable interaction with content under BottomSheet |
-| `IsCancelable`          | `bool`                   | Allow user to close via gestures or background click      |
-| `HasHandle`             | `bool`                   | Show/hide the drag handle                                 |
-| `ShowHeader`            | `bool`                   | Show/hide the header section                              |
-| `IsOpen`                | `bool`                   | Control open/close state                                  |
-| `IsDraggable`           | `bool`                   | Enable/disable drag gestures (useful for drawing)         |
-| `States`                | `List<BottomSheetState>` | Allowed states (Peek, Medium, Large)                      |
-| `CurrentState`          | `BottomSheetState`       | Current display state                                     |
-| `PeekHeight`            | `double`                 | Height when in peek state (iOS 16+)                       |
-| `Padding`               | `double`                 | Internal padding                                          |
-| `BackgroundColor`       | `Color`                  | Background color                                          |
-| `CornerRadius`          | `float`                  | Top corner radius                                         |
-| `WindowBackgroundColor` | `Color`                  | Window background (modal only)                            |
+| Property                | Type                     | Description                                                                                                                                                                                |
+|-------------------------|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `IsModal`               | `bool`                   | Enable/disable interaction with content under BottomSheet                                                                                                                                  |
+| `IsCancelable`          | `bool`                   | Allow user to close via gestures or background click                                                                                                                                       |
+| `HasHandle`             | `bool`                   | Show/hide the drag handle                                                                                                                                                                  |
+| `ShowHeader`            | `bool`                   | Show/hide the header section                                                                                                                                                               |
+| `IsOpen`                | `bool`                   | Control open/close state                                                                                                                                                                   |
+| `IsDraggable`           | `bool`                   | Enable/disable drag gestures (useful for drawing)                                                                                                                                          |
+| `States`                | `List<BottomSheetState>` | Allowed states (Peek, Medium, Large)                                                                                                                                                       |
+| `CurrentState`          | `BottomSheetState`       | Current display state                                                                                                                                                                      |
+| `PeekHeight`            | `double`                 | Height when in peek state (iOS 16+)                                                                                                                                                        |
+| `Padding`               | `double`                 | Internal padding                                                                                                                                                                           |
+| `BackgroundColor`       | `Color`                  | Background color                                                                                                                                                                           |
+| `CornerRadius`          | `float`                  | Top corner radius                                                                                                                                                                          |
+| `WindowBackgroundColor` | `Color`                  | Window background (modal only)                                                                                                                                                             |
+| `SizeMode`              | `BottomSheetSizeMode`    | Represents a size mode for the bottom sheet where the height is adjusted dynamically to fit the content displayed within it or a fixed value based on the number of states it can display. |
+
+
+### Size Modes
+
+| State          | Description                                                                                                                                                                                                                                        |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `States`       | Represents a size mode for the bottom sheet where the height is set to a fixed value based on the number of states it can display. This mode ensures the bottom sheet is fully expanded rather than dynamically adjusting its size to-fit content. |
+| `FitToContent` | A size mode indicating that the bottom sheet dynamically adjusts its height to precisely fit the content it displays. In this mode, the bottom sheet wraps around its contents and does not occupy any more vertical space than necessary.         |
+
+> [!CAUTION]
+> Mode `FitToContent` is not compatible with the `States` and `CurrentState` property. Do not mix these two properties.
+> Requires iOS 16+. On prior versions of iOS, the medium state will be used instead.
 
 ### 🎭 BottomSheet States
 
@@ -257,29 +293,27 @@ or
     </bottomsheet:BottomSheet.Header>
     
     <!-- Content with Peek Height Behavior -->
-    <bottomsheet:BottomSheet.Content>
-        <bottomsheet:BottomSheetContent>
-            <bottomsheet:BottomSheetContent.ContentTemplate>
-                <DataTemplate>
-                    <VerticalStackLayout>
-                        <!-- Peek Content -->
-                        <ContentView>
-                            <ContentView.Behaviors>
-                                <bottomsheet:BottomSheetPeekBehavior />
-                            </ContentView.Behaviors>
-                            <Label Text="This content is visible in peek mode" />
-                        </ContentView>
+    <bottomsheet:BottomSheetContent>
+        <bottomsheet:BottomSheetContent.ContentTemplate>
+            <DataTemplate>
+                <VerticalStackLayout>
+                    <!-- Peek Content -->
+                    <ContentView>
+                        <ContentView.Behaviors>
+                            <bottomsheet:BottomSheetPeekBehavior />
+                        </ContentView.Behaviors>
+                        <Label Text="This content is visible in peek mode" />
+                    </ContentView>
                         
-                        <!-- Full Content -->
-                        <Grid>
-                            <Label Text="This content appears when expanded" />
-                            <!-- Your content here -->
-                        </Grid>
-                    </VerticalStackLayout>
-                </DataTemplate>
-            </bottomsheet:BottomSheetContent.ContentTemplate>
-        </bottomsheet:BottomSheetContent>
-    </bottomsheet:BottomSheet.Content>
+                    <!-- Full Content -->
+                    <Grid>
+                        <Label Text="This content appears when expanded" />
+                        <!-- Your content here -->
+                    </Grid>
+                </VerticalStackLayout>
+            </DataTemplate>
+        </bottomsheet:BottomSheetContent.ContentTemplate>
+    </bottomsheet:BottomSheetContent>
     
     <!-- Styling -->
     <bottomsheet:BottomSheet.BottomSheetStyle>
@@ -294,6 +328,20 @@ or
         </bottomsheet:BottomSheetStyle>
     </bottomsheet:BottomSheet.BottomSheetStyle>
 </bottomsheet:BottomSheet>
+```
+### 📋 Easy and fast popups with content based size
+
+```xaml
+<mauibottomsheet:BottomSheet
+    SizeMode="FitToContent">
+    <mauibottomsheet:BottomSheetContent>
+        <mauibottomsheet:BottomSheetContent.Content>
+            <Grid RowDefinitions="300">
+                <BoxView x:Name="ContentBox" Color="Orange" />
+            </Grid>
+        </mauibottomsheet:BottomSheetContent.Content>
+    </mauibottomsheet:BottomSheetContent>
+</mauibottomsheet:BottomSheet>
 ```
 
 ### 🎨 Global Styling
@@ -583,14 +631,51 @@ To disable:
 
 By design, sheets are always [modal](https://developer.apple.com/design/human-interface-guidelines/sheets#macOS) on macOS.
 
+### 🪟 Windows
+
+To ensure the same user experience (UX) across desktop applications, Windows sheets are always modal too.
+The sheet implementation mimics `Microsoft.UI.Xaml.Controls.ContentDialog` therefore some [default](https://github.com/microsoft/microsoft-ui-xaml/blob/main/src/dxaml/xcp/dxaml/themes/generic.xaml) properties are set.
+
+|Property       | ResourceKey               |   Value |
+|---------------|---------------------------|---------|
+|BorderThickness| ContentDialogBorderWidth  |   1     |
+|MinWidth       | ContentDialogMinWidth     |   320   |
+|MinHeight      | ContentDialogMinHeight    |   184   |
+|MaxWidth       | ContentDialogMaxWidth     |   548   |
+|MaxHeight      | ContentDialogMaxHeight    |   756   |
+
+#### 📏 Size Constraints
+
+```csharp
+// Code approach
+MyBottomSheet.On<Windows>().SetMaxHeight(800);
+MyBottomSheet.On<Windows>().SetMaxWidth(600);
+MyBottomSheet.On<Windows>().SetMinHeight(800);
+MyBottomSheet.On<Windows>().SetMinWidth(600);
+```
+
+```xaml
+<!-- XAML approach -->
+xmlns:windowsBottomsheet="http://pluginmauibottomsheet.com/platformconfiguration/windows"
+
+<bottomsheet:BottomSheet
+    androidBottomsheet:BottomSheet.MinWidth="300"
+    androidBottomsheet:BottomSheet.MinHeight="300"
+    androidBottomsheet:BottomSheet.MaxWidth="300"
+    androidBottomsheet:BottomSheet.MaxHeight="300">
+    <!-- Content -->
+</bottomsheet:BottomSheet>
+```
+
 ### 📱 Platform Considerations
 
-| Feature       | iOS     | Android | MacCatalyst |
-|---------------|---------|---------|-------------|
-| Edge-to-Edge  | ✅       | ✅       | ✅           |
-| PeekHeight    | iOS 16+ | ✅       | ❌           |
-| Custom Themes | ❌       | ✅       | ❌           |
-| Modal Only    | ❌       | ❌       | ✅           |
+| Feature       | iOS     | Android | MacCatalyst | Windows |
+|---------------|---------|---------|-------------|---------|
+| Edge-to-Edge  | ✅       | ✅       | ❌           | ❌       |
+| PeekHeight    | iOS 16+ | ✅       | ❌           | ❌       |
+| Custom Themes | ❌       | ✅       | ❌           | ❌       |
+| Modal Only    | ❌       | ❌       | ✅           | ✅       |
+
 
 ## 🔄 Lifecycle Events
 

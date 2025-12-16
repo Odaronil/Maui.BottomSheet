@@ -12,7 +12,7 @@ using Plugin.Maui.BottomSheet.Platform.Android;
 /// <summary>
 /// Handles the platform-specific behavior and lifecycle of a bottom sheet view within the Android platform.
 /// </summary>
-internal sealed partial class BottomSheetHandler : ViewHandler<IBottomSheet, MauiBottomSheet>
+public sealed partial class BottomSheetHandler : ViewHandler<IBottomSheet, MauiBottomSheet>
 {
     /// <summary>
     /// Asynchronously opens a bottom sheet using the platform-specific implementation.
@@ -283,5 +283,20 @@ internal sealed partial class BottomSheetHandler : ViewHandler<IBottomSheet, Mau
     private static void MapHalfExpandedRatio(BottomSheetHandler handler, IBottomSheet bottomSheet, object? sender)
     {
         handler.PlatformView.SetHalfExpandedRatio();
+    }
+
+    /// <summary>
+    /// Maps the <c>SizeMode</c> property of the <see cref="IBottomSheet"/> to the platform-specific implementation.
+    /// </summary>
+    /// <param name="handler">The <see cref="BottomSheetHandler"/> responsible for managing the platform-specific view representation.</param>
+    /// <param name="bottomSheet">The <see cref="IBottomSheet"/> whose <c>SizeMode</c> is being mapped.</param>
+    private static void MapSizeMode(BottomSheetHandler handler, IBottomSheet bottomSheet)
+    {
+        if (handler.PlatformView.IsOpen == false)
+        {
+            return;
+        }
+
+        handler.PlatformView.SetSizeMode();
     }
 }

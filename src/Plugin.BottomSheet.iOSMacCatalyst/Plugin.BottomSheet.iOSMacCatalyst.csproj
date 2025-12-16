@@ -8,6 +8,9 @@
         </TargetFrameworks>
 
         <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+
+        <AssemblyName>Plugin.BottomSheet.iOSMacCatalyst</AssemblyName>
+        <RootNamespace>Plugin.BottomSheet.iOSMacCatalyst</RootNamespace>
     </PropertyGroup>
 	
     <ItemGroup>
@@ -17,6 +20,10 @@
     <ItemGroup>
       <ProjectReference Include="..\Plugin.BottomSheet\Plugin.BottomSheet.csproj" />
     </ItemGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	</PropertyGroup>
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
