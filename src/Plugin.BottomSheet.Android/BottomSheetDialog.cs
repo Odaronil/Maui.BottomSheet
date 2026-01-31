@@ -148,7 +148,13 @@ public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.Bott
             if (_content?.Parent is View parent
                 && parent.Background is MaterialShapeDrawable shapeDrawable)
             {
-                shapeDrawable.SetCornerSize(Context.ToPixels(value));
+                ShapeAppearanceModel.Builder model = shapeDrawable.ShapeAppearanceModel.ToBuilder();
+                model.SetTopLeftCornerSize(Context.ToPixels(value));
+                model.SetTopRightCornerSize(Context.ToPixels(value));
+                model.SetBottomLeftCornerSize(0);
+                model.SetBottomRightCornerSize(0);
+
+                shapeDrawable.ShapeAppearanceModel = model.Build();
             }
         }
     }
@@ -290,6 +296,15 @@ public sealed class BottomSheetDialog : Google.Android.Material.BottomSheet.Bott
     {
         get => Behavior.HalfExpandedRatio;
         set => Behavior.HalfExpandedRatio = value;
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the corners of the bottom sheet should be removed when the sheet is fully expanded.
+    /// </summary>
+    public bool ShouldRemoveExpandedCorners
+    {
+        get => Behavior.ShouldRemoveExpandedCorners;
+        set => Behavior.ShouldRemoveExpandedCorners = value;
     }
 
     /// <summary>

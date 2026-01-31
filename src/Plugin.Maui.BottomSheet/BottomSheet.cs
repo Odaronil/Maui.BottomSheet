@@ -322,17 +322,9 @@ public partial class BottomSheet : View, IBottomSheet, IElementConfiguration<Bot
     public BottomSheet()
     {
         _platformConfigurationRegistry = new Lazy<PlatformConfigurationRegistry<BottomSheet>>(() => new PlatformConfigurationRegistry<BottomSheet>(this));
-        Unloaded += OnUnloaded;
-        HandlerChanged += OnHandlerChanged;
+        Loaded += OnLoaded;
 
-        ContainerView = new Grid
-        {
-            RowDefinitions = new RowDefinitionCollection(
-                new RowDefinition(GridLength.Auto),
-                new RowDefinition(GridLength.Auto),
-                new RowDefinition(GridLength.Star)),
-            Padding = Padding,
-        };
+        ContainerView.Padding = Padding;
     }
 
     /// <summary>
@@ -602,7 +594,14 @@ public partial class BottomSheet : View, IBottomSheet, IElementConfiguration<Bot
     /// <summary>
     /// Gets the container view element.
     /// </summary>
-    public Grid ContainerView { get; }
+    // Do not move initialization into constructor. See issue #200. Global implicit styles set BottomSheet properties before constructor is finished.
+    public Grid ContainerView { get; } = new()
+    {
+        RowDefinitions = new RowDefinitionCollection(
+            new RowDefinition(GridLength.Auto),
+            new RowDefinition(GridLength.Auto),
+            new RowDefinition(GridLength.Star)),
+    };
 
     /// <summary>
     /// Gets or sets a property that defines the sizing behavior of the bottom sheet,
@@ -993,25 +992,29 @@ public partial class BottomSheet : View, IBottomSheet, IElementConfiguration<Bot
     }
 
     /// <summary>
+    /// Handles the loaded event for the <see cref="BottomSheet"/> component.
+    /// Ensures that necessary event handlers, such as <see cref="OnUnloaded"/>.
+    /// </summary>
+    /// <param name="sender">
+    /// The source of the event, typically the <see cref="BottomSheet"/> instance.
+    /// </param>
+    /// <param name="e">
+    /// Contains the event data associated with the loaded event.
+    /// </param>
+    private void OnLoaded(object? sender, EventArgs e)
+    {
+        Unloaded += OnUnloaded;
+    }
+
+    /// <summary>
     /// Disconnects the handler manually to address scenarios where MAUI does not call the disconnect handler.
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The event data.</param>
     private void OnUnloaded(object? sender, EventArgs e)
     {
-        Handler?.DisconnectHandler();
-        Unloaded -= OnUnloaded;
-        HandlerChanged -= OnHandlerChanged;
-    }
-
-    /// <summary>
-    /// Called when the handler for the associated element changes.
-    /// </summary>
-    /// <param name="sender">The source of the event, typically the associated element.</param>
-    /// <param name="e">An event data object that provides details about the change.</param>
-    private void OnHandlerChanged(object? sender, EventArgs e)
-    {
         IsOpen = false;
+        Unloaded -= OnUnloaded;
     }
 
     /// <summary>
@@ -1036,7 +1039,7 @@ public partial class BottomSheet : View, IBottomSheet, IElementConfiguration<Bot
     /// </summary>
     private void CreateLayout()
     {
-        bool isInModalPage = this.GetPageParent() is Page page
+        bool isInModalPage = Parent is Page page
             && Navigation.ModalStack.Contains(page);
 
         if (HasHandle)
